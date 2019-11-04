@@ -1,4 +1,8 @@
 
 # About the project
 
-*Write a short description about the course and add a link to your GitHub repository here. This is an R Markdown (.Rmd) file so you can use R Markdown syntax.*
+
+*Hi, I am sehrish. Right now, I am quite nervous regarding this course.This is my first time taking such course on data science. But I hope, after this course I will feel much better with data science.I got the link of this course from *Clinical nutrition society* page. Looking forward to learn much more from experienced teachers.Here is the link to my GitHub repository*
+
+
+[link](https://sehrisn.github.io/IODS-project/)
