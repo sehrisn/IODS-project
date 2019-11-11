@@ -4,4 +4,38 @@
 
 - Describe your work and results clearly. 
 - Assume the reader has an introductory course level understanding of writing and reading R code as well as statistical methods.
-- Assume the reader has no previous knowledge of your data or the more advanced methods you are using.
+- Assume th
+
+exer2 <- read.table("https://www.mv.helsinki.fi/home/kvehkala/JYTmooc/JYTOPKYS3-meta.txt", sep=",", header=TRUE)
+ 
+# Look at the dimensions of the data
+dim(exer2)
+
+#dimensions of data
+*28 obs. of 1 variable
+
+# Structure of the data
+* Includes also Age (positive integers) and gender (as a two level factor: F and M)
+*Attitude = Global attitude toward statistics
+* Points=Exam points
+
+# Use the gglot2 library
+library(ggplot2)
+
+# initialize plot with data and aesthetic mapping
+p1 <- ggplot(exer2, aes(x = attitude, y = points, col = gender))
+
+# define the visualization type (points)
+p2 <- p1 + geom_point()
+
+# draw the plot
+p2
+
+# add a regression line
+p3 <- p2 + geom_smooth(method = "lm")
+
+# add a main title and draw the plot
+p4 <- p3 + ggtitle("Student's attitude versus exam points")
+p4
+
+
