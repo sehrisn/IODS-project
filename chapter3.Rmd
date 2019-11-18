@@ -1,0 +1,176 @@
+---
+title: "chapter3.Rmd"
+author: "sehrish Naveed"
+date: "18 marraskuuta 2019"
+output: pdf_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## R Markdown
+
+This is an R Markdown document. Markdown is a simple formatting syntax for authoring HTML, PDF, and MS Word documents. For more details on using R Markdown see <http://rmarkdown.rstudio.com>.
+
+When you click the **Knit** button a document will be generated that includes both content as well as the output of any embedded R code chunks within the document. You can embed an R code chunk like this:
+
+```{r cars}
+summary(cars)
+```
+
+## Including Plots
+
+You can also embed plots, for example:
+
+```{r pressure, echo=FALSE}
+plot(pressure)
+```
+
+Note that the `echo = FALSE` parameter was added to the code chunk to prevent printing of the R code that generated the plot.
+
+#Data from machine learning database
+url <- "http://s3.amazonaws.com/assets.datacamp.com/production/course_2218/datasets"
+
+#structure of data
+*382 observations of 33 variables
+*The data attributes include student grades, demographic, social and school related features. The joined data set used in the analysis  exercise combines the two student alcohol consumption data sets. The following adjustments have been made: The variables not used for joining the two data have been combined by averaging (including the grade variables). 'alc_use' is the average of 'Dalc' and 'Walc' and 'high_use' is TRUE if 'alc_use' is higher than 2 and FALSE otherwise.
+
+###the relationships between high/low alcohol consumption and some of the other variables in the data.
+
+## The hypotheses are as follows:
+*Male students consume more alcohol than female students.
+* Alcohol consumption is associated with bad school grades. Higher the alcohol consumption worse are the grades.
+*Alcohol consumption is associated with more absences from the school.
+*Alcohol consumption is associated with bad family relationship.
+# alc is available
+
+# access the tidyverse libraries dplyr and ggplot2
+library(dplyr); library(ggplot2)
+
+# produce summary statistics by group
+alc %>% group_by(sex, high_use) %>% summarise(count = n(), mean_grade = mean(G3))
+
+alc %>% group_by(sex, high_use) %>% summarise(count = n(), mean(absences))
+
+alc %>% group_by(sex, high_use) %>% summarise(count = n(), mean(famrel))
+
+#Graphical presentation of relationships
+
+library(ggplot2)
+
+# initialize a plot of high_use and G3
+g1 <- ggplot(alc, aes(x = high_use, y = G3, col = sex))
+
+# define the plot as a boxplot and draw it
+g1 + geom_boxplot() + ylab("grade")
+
+# initialise a plot of high_use and absences
+g2 <- ggplot(alc, aes(x = high_use, y = absences, col = sex))
+
+# define the plot as a boxplot and draw it
+g2 + geom_boxplot() + ggtitle("Student absences by alcohol consumption and sex")
+
+# initialise a plot of high_use and absences
+g3 <- ggplot(alc, aes(x = high_use, y = famrel, col = sex))
+
+# define the plot as a boxplot and draw it
+g3 + geom_boxplot() + ggtitle("Student family relationship by alcohol consumption and sex")
+
+##Results
+*Data has 198 F and 184 M students.Out of female students 157 have alcoholconsumption score lower than 2 and 41 have more than 2. out of male students 113 have alcoholconsumption score lower than 2 and 71 have more than 2. The grapical representation also shows that male students are consuming more alcohol than Female students.
+*On average, female students consuming more alcohol had better grades than those consuming less alcohol.While male students consuming less alcohol showed better grades than those consuming more alcohol.
+*Female and male students having alcohol consumption score more than 2 are having 8.90 and 7.41 absences from school respectively while those having consumption score less than 2 have mean absence of 4.97 and 3.19 respectively.Students consuming more alcohol have more absences from the school.
+*On average all the students are having good family relationship scoring above 3.70. Male having less than 2 alcohol consumption score are having best relationship with family scoring 4.15 followed by the female counterparts with a score of 3.92. Male and female students consuming more alcohol are having family relationship score of 3.77 and 3,73 respectively. So, it might be possible that somehow alcohol consumption is associted with these low score on family relationships of students.
+
+###Logistic regression
+
+# alc is available 
+
+# find the model with glm()
+m <- glm(high_use ~ failures + absences + sex + famrel, data = alc, family = "binomial")
+
+# print out a summary of the model
+summary(m)
+
+# print out the coefficients of the model
+coef(m)
+
+# compute odds ratios (OR)
+OR <- coef(m) %>% exp
+
+# compute confidence intervals (CI)
+CI <- confint(m) %>% exp
+
+# print out the odds ratios with their confidence intervals
+cbind(OR, CI)
+
+##Results:
+*The results of logistic regression shows that the the failures and family realtionship show significant association with high alcohol consumption with p value 0.01. The t value shows that the high alcohol consumption has positive association with failures with score of 2.57 and family relationship shows negative association of 2.42. means that more the failures more the alchol consumption and worse are the family relationships.
+*Odds ratio also validate the results that the failures have OR of 1.47 (97% CI = 1.97) means positive assocition and family relationships have OR of 0.73 (97% CI = 0.94) means negative assocition with alcohol consumption.
+
+##Binary Prediction
+
+# alc, dplyr are available
+
+# fit the model
+m <- glm(high_use ~ failures + absences + sex + famrel, data = alc, family = "binomial")
+
+# predict() the probability of high_use
+probabilities <- predict(m, type = "response")
+
+# add the predicted probabilities to 'alc'
+alc <- mutate(alc, probability = probabilities)
+
+# use the probabilities to make a prediction of high_use
+alc <- mutate(alc, prediction = probability > 0.5)
+
+# see the last ten original classes, predicted probabilities, and class predictions
+select(alc, failures, absences, sex, famrel, high_use, probability, prediction) %>% tail(10)
+
+# alc is available
+
+# access dplyr and ggplot2
+library(dplyr); library(ggplot2)
+
+# initialize a plot of 'high_use' versus 'probability' in 'alc'
+g <- ggplot(alc, aes(x = probability, y = high_use, col = prediction))
+
+# define the geom as points and draw the plot
+g + geom_point()
+
+# tabulate the target variable versus the predictions
+table(high_use = alc$high_use, prediction = alc$prediction) %>% prop.table %>% addmargins
+
+##Results:
+*
+
+##Cross validation
+# define a loss function (average prediction error)
+loss_func <- function(class, prob) {
+  n_wrong <- abs(class - prob) > 0.5
+  mean(n_wrong)
+}
+
+# call loss_func to compute the average number of wrong predictions in the (training) data
+loss_func(class = alc$high_use, prob = alc$probability)
+
+# the logistic regression model m and dataset alc (with predictions) are available
+
+# define a loss function (average prediction error)
+loss_func <- function(class, prob) {
+  n_wrong <- abs(class - prob) > 0.5
+  mean(n_wrong)
+}
+
+# compute the average number of wrong predictions in the (training) data
+loss_func(class = alc$high_use, prob = alc$probability)
+
+# K-fold cross-validation
+library(boot)
+cv <- cv.glm(data = alc, cost = loss_func, glmfit = m, K = 10)
+
+# average number of wrong predictions in the cross validation
+cv$delta[1]
+
+## Results
