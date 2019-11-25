@@ -95,3 +95,16 @@ Mean   :52.61                            Mean   :74.74
 3rd Qu.:62.62                            3rd Qu.:80.15                         
 Max.   :88.10                            Max.   :95.50                         
 NA's   :11                               NA's   :11 
+
+##Mutate the “Gender inequality” data
+
+## gii is available
+
+# access the 'tidyverse' packages dplyr and ggplot2
+library(dplyr); library(ggplot2)
+
+# define a new column the ratio of Female and Male populations with secondary education in each country
+gii <- mutate(gii, ratioedu2MF = (edu2F / edu2M)
+
+#the ratio of labour force participation of females and males in each country.
+gii <- mutate(gii, ratiolab2MF = (labF / labM)
