@@ -1,0 +1,794 @@
+---
+title: "chapter4"
+author: "sehrish Naveed"
+date: "25 marraskuuta 2019"
+output: pdf_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## R Markdown
+
+This is an R Markdown document. Markdown is a simple formatting syntax for authoring HTML, PDF, and MS Word documents. For more details on using R Markdown see <http://rmarkdown.rstudio.com>.
+
+When you click the **Knit** button a document will be generated that includes both content as well as the output of any embedded R code chunks within the document. You can embed an R code chunk like this:
+
+```{r cars}
+summary(cars)
+```
+
+## Including Plots
+
+You can also embed plots, for example:
+
+```{r pressure, echo=FALSE}
+plot(pressure)
+```
+
+Note that the `echo = FALSE` parameter was added to the code chunk to prevent printing of the R code that generated the plot.
+
+# access the MASS package 
+
+library(MASS) 
+
+  
+
+# load the data 
+
+data("Boston") 
+
+  
+
+# explore the dataset 
+
+str(Boston) 
+
+summary(Boston) 
+
+  
+
+##'data.frame':    506 obs. of  14 variables. The variables are as follows: 
+
+$ crim   : num  0.00632 0.02731 0.02729 0.03237 0.06905 ... 
+
+$ zn     : num  18 0 0 0 0 0 12.5 12.5 12.5 12.5 ... 
+
+$ indus  : num  2.31 7.07 7.07 2.18 2.18 2.18 7.87 7.87 7.87 7.87 ... 
+
+$ chas   : int  0 0 0 0 0 0 0 0 0 0 ... 
+
+$ nox    : num  0.538 0.469 0.469 0.458 0.458 0.458 0.524 0.524 0.524 0.524 ... 
+
+$ rm     : num  6.58 6.42 7.18 7 7.15 ... 
+
+$ age    : num  65.2 78.9 61.1 45.8 54.2 58.7 66.6 96.1 100 85.9 ... 
+
+$ dis    : num  4.09 4.97 4.97 6.06 6.06 ... 
+
+$ rad    : int  1 2 2 3 3 3 5 5 5 5 ... 
+
+$ tax    : num  296 242 242 222 222 222 311 311 311 311 ... 
+
+$ ptratio: num  15.3 17.8 17.8 18.7 18.7 18.7 15.2 15.2 15.2 15.2 ... 
+
+$ black  : num  397 397 393 395 397 ... 
+
+$ lstat  : num  4.98 9.14 4.03 2.94 5.33 ... 
+
+$ medv   : num  24 21.6 34.7 33.4 36.2 28.7 22.9 27.1 16.5 18.9 ... 
+
+  
+
+##Below is the summary of the data 
+
+> summary(Boston) 
+
+      crim                zn             indus            chas         
+
+Min.   : 0.00632   Min.   :  0.00   Min.   : 0.46   Min.   :0.00000   
+
+1st Qu.: 0.08204   1st Qu.:  0.00   1st Qu.: 5.19   1st Qu.:0.00000   
+
+Median : 0.25651   Median :  0.00   Median : 9.69   Median :0.00000   
+
+Mean   : 3.61352   Mean   : 11.36   Mean   :11.14   Mean   :0.06917   
+
+3rd Qu.: 3.67708   3rd Qu.: 12.50   3rd Qu.:18.10   3rd Qu.:0.00000   
+
+Max.   :88.97620   Max.   :100.00   Max.   :27.74   Max.   :1.00000   
+
+      nox               rm             age              dis         
+
+Min.   :0.3850   Min.   :3.561   Min.   :  2.90   Min.   : 1.130   
+
+1st Qu.:0.4490   1st Qu.:5.886   1st Qu.: 45.02   1st Qu.: 2.100   
+
+Median :0.5380   Median :6.208   Median : 77.50   Median : 3.207   
+
+Mean   :0.5547   Mean   :6.285   Mean   : 68.57   Mean   : 3.795   
+
+3rd Qu.:0.6240   3rd Qu.:6.623   3rd Qu.: 94.08   3rd Qu.: 5.188   
+
+Max.   :0.8710   Max.   :8.780   Max.   :100.00   Max.   :12.127   
+
+      rad              tax           ptratio          black        
+
+Min.   : 1.000   Min.   :187.0   Min.   :12.60   Min.   :  0.32   
+
+1st Qu.: 4.000   1st Qu.:279.0   1st Qu.:17.40   1st Qu.:375.38   
+
+Median : 5.000   Median :330.0   Median :19.05   Median :391.44   
+
+Mean   : 9.549   Mean   :408.2   Mean   :18.46   Mean   :356.67   
+
+3rd Qu.:24.000   3rd Qu.:666.0   3rd Qu.:20.20   3rd Qu.:396.23   
+
+Max.   :24.000   Max.   :711.0   Max.   :22.00   Max.   :396.90   
+
+     lstat            medv       
+
+Min.   : 1.73   Min.   : 5.00   
+
+1st Qu.: 6.95   1st Qu.:17.02   
+
+Median :11.36   Median :21.20   
+
+Mean   :12.65   Mean   :22.53   
+
+3rd Qu.:16.95   3rd Qu.:25.00   
+
+Max.   :37.97   Max.   :50.00 
+
+>  
+
+> # plot matrix of the variables 
+
+> pairs(Boston) 
+# MASS, corrplot, tidyr and Boston dataset are available 
+
+  
+
+# calculate the correlation matrix and round it 
+
+cor_matrix<-cor(Boston) %>% round(digits = 2) 
+
+  
+
+# print the correlation matrix 
+
+cor_matrix 
+
+  
+
+# visualize the correlation matrix 
+
+corrplot(cor_matrix, method="circle", type="upper", cl.pos="b", tl.pos="d", tl.cex = 0.6) 
+
+  
+
+# MASS, corrplot, tidyr and Boston dataset are available 
+
+>  
+
+  
+
+# calculate the correlation matrix and round it 
+
+> cor_matrix<-cor(Boston) %>% round(digits = 2) 
+
+>  
+
+  
+
+# print the correlation matrix 
+
+> cor_matrix 
+
+         crim    zn indus  chas   nox    rm   age   dis   rad   tax ptratio 
+
+crim     1.00 -0.20  0.41 -0.06  0.42 -0.22  0.35 -0.38  0.63  0.58    0.29 
+
+zn      -0.20  1.00 -0.53 -0.04 -0.52  0.31 -0.57  0.66 -0.31 -0.31   -0.39 
+
+indus    0.41 -0.53  1.00  0.06  0.76 -0.39  0.64 -0.71  0.60  0.72    0.38 
+
+chas    -0.06 -0.04  0.06  1.00  0.09  0.09  0.09 -0.10 -0.01 -0.04   -0.12 
+
+nox      0.42 -0.52  0.76  0.09  1.00 -0.30  0.73 -0.77  0.61  0.67    0.19 
+
+rm      -0.22  0.31 -0.39  0.09 -0.30  1.00 -0.24  0.21 -0.21 -0.29   -0.36 
+
+age      0.35 -0.57  0.64  0.09  0.73 -0.24  1.00 -0.75  0.46  0.51    0.26 
+
+dis     -0.38  0.66 -0.71 -0.10 -0.77  0.21 -0.75  1.00 -0.49 -0.53   -0.23 
+
+rad      0.63 -0.31  0.60 -0.01  0.61 -0.21  0.46 -0.49  1.00  0.91    0.46 
+
+tax      0.58 -0.31  0.72 -0.04  0.67 -0.29  0.51 -0.53  0.91  1.00    0.46 
+
+ptratio  0.29 -0.39  0.38 -0.12  0.19 -0.36  0.26 -0.23  0.46  0.46    1.00 
+
+black   -0.39  0.18 -0.36  0.05 -0.38  0.13 -0.27  0.29 -0.44 -0.44   -0.18 
+
+lstat    0.46 -0.41  0.60 -0.05  0.59 -0.61  0.60 -0.50  0.49  0.54    0.37 
+
+medv    -0.39  0.36 -0.48  0.18 -0.43  0.70 -0.38  0.25 -0.38 -0.47   -0.51 
+
+        black lstat  medv 
+
+crim    -0.39  0.46 -0.39 
+
+zn       0.18 -0.41  0.36 
+
+indus   -0.36  0.60 -0.48 
+
+chas     0.05 -0.05  0.18 
+
+nox     -0.38  0.59 -0.43 
+
+rm       0.13 -0.61  0.70 
+
+age     -0.27  0.60 -0.38 
+
+dis      0.29 -0.50  0.25 
+
+rad     -0.44  0.49 -0.38 
+
+tax     -0.44  0.54 -0.47 
+
+ptratio -0.18  0.37 -0.51 
+
+black    1.00 -0.37  0.33 
+
+lstat   -0.37  1.00 -0.74 
+
+medv     0.33 -0.74  1.00 
+
+>  
+
+  
+
+# visualize the correlation matrix 
+
+> corrplot(cor_matrix, method="circle", type="upper", cl.pos="b", tl.pos="d", tl.cex = 0.6) 
+
+  
+
+# MASS and Boston dataset are available 
+
+  
+
+# center and standardize variables 
+
+boston_scaled <- scale(Boston) 
+
+  
+
+# summaries of the scaled variables 
+
+summary(boston_scaled) 
+
+  
+
+# class of the boston_scaled object 
+
+class(boston_scaled) 
+
+  
+
+# change the object to data frame 
+
+boston_scaled <- as.data.frame(boston_scaled) 
+
+# MASS and Boston dataset are available 
+
+>  
+
+  
+
+# center and standardize variables 
+
+> boston_scaled <- scale(Boston) 
+
+>  
+
+  
+
+# summaries of the scaled variables 
+
+> summary(boston_scaled) 
+
+      crim                 zn               indus              chas         
+
+Min.   :-0.419367   Min.   :-0.48724   Min.   :-1.5563   Min.   :-0.2723   
+
+1st Qu.:-0.410563   1st Qu.:-0.48724   1st Qu.:-0.8668   1st Qu.:-0.2723   
+
+Median :-0.390280   Median :-0.48724   Median :-0.2109   Median :-0.2723   
+
+Mean   : 0.000000   Mean   : 0.00000   Mean   : 0.0000   Mean   : 0.0000   
+
+3rd Qu.: 0.007389   3rd Qu.: 0.04872   3rd Qu.: 1.0150   3rd Qu.:-0.2723   
+
+Max.   : 9.924110   Max.   : 3.80047   Max.   : 2.4202   Max.   : 3.6648   
+
+      nox                rm               age               dis          
+
+Min.   :-1.4644   Min.   :-3.8764   Min.   :-2.3331   Min.   :-1.2658   
+
+1st Qu.:-0.9121   1st Qu.:-0.5681   1st Qu.:-0.8366   1st Qu.:-0.8049   
+
+Median :-0.1441   Median :-0.1084   Median : 0.3171   Median :-0.2790   
+
+Mean   : 0.0000   Mean   : 0.0000   Mean   : 0.0000   Mean   : 0.0000   
+
+3rd Qu.: 0.5981   3rd Qu.: 0.4823   3rd Qu.: 0.9059   3rd Qu.: 0.6617   
+
+Max.   : 2.7296   Max.   : 3.5515   Max.   : 1.1164   Max.   : 3.9566   
+
+      rad               tax             ptratio            black         
+
+Min.   :-0.9819   Min.   :-1.3127   Min.   :-2.7047   Min.   :-3.9033   
+
+1st Qu.:-0.6373   1st Qu.:-0.7668   1st Qu.:-0.4876   1st Qu.: 0.2049   
+
+Median :-0.5225   Median :-0.4642   Median : 0.2746   Median : 0.3808   
+
+Mean   : 0.0000   Mean   : 0.0000   Mean   : 0.0000   Mean   : 0.0000   
+
+3rd Qu.: 1.6596   3rd Qu.: 1.5294   3rd Qu.: 0.8058   3rd Qu.: 0.4332   
+
+Max.   : 1.6596   Max.   : 1.7964   Max.   : 1.6372   Max.   : 0.4406   
+
+     lstat              medv         
+
+Min.   :-1.5296   Min.   :-1.9063   
+
+1st Qu.:-0.7986   1st Qu.:-0.5989   
+
+Median :-0.1811   Median :-0.1449   
+
+Mean   : 0.0000   Mean   : 0.0000   
+
+3rd Qu.: 0.6024   3rd Qu.: 0.2683   
+
+Max.   : 3.5453   Max.   : 2.9865 
+
+>  
+
+  
+
+# class of the boston_scaled object 
+
+> class(boston_scaled) 
+
+[1] "matrix" 
+
+>  
+
+  
+
+# change the object to data frame 
+
+> boston_scaled <- as.data.frame(boston_scaled) 
+
+>  
+
+  
+
+##creating factor variables 
+
+  
+
+# MASS, Boston and boston_scaled are available 
+
+  
+
+# summary of the scaled crime rate 
+
+summary(boston_scaled$crim) 
+
+# create a quantile vector of crim and print it 
+
+bins <- quantile(boston_scaled$crim) 
+
+bins 
+
+  
+
+# create a categorical variable 'crime' 
+
+crime <- cut(boston_scaled$crim, breaks = bins, include.lowest = TRUE, labels = c("low", "med_low", "med_high", "high")) 
+
+  
+
+# look at the table of the new factor crime 
+
+table(crime) 
+
+  
+
+# remove original crim from the dataset 
+
+boston_scaled <- dplyr::select(boston_scaled, -crim) 
+
+  
+
+# add the new categorical value to scaled data 
+
+boston_scaled <- data.frame(boston_scaled, crime) 
+
+  
+
+# MASS, Boston and boston_scaled are available 
+
+> 
+
+  
+
+# summary of the scaled crime rate 
+
+> summary(boston_scaled$crim) 
+
+     Min.   1st Qu.    Median      Mean   3rd Qu.      Max.  
+
+-0.419367 -0.410563 -0.390280  0.000000  0.007389  9.924110 
+
+>  
+
+  
+
+# create a quantile vector of crim and print it 
+
+> bins <- quantile(boston_scaled$crim) 
+
+> bins 
+
+          0%          25%          50%          75%         100%  
+
+-0.419366929 -0.410563278 -0.390280295  0.007389247  9.924109610 
+
+>  
+
+  
+
+# create a categorical variable 'crime' 
+
+> crime <- cut(boston_scaled$crim, breaks = bins, include.lowest = TRUE, labels = c("low", "med_low", "med_high", "high")) 
+
+>  
+
+  
+
+# look at the table of the new factor crime 
+
+> table(crime) 
+
+crime 
+
+     low  med_low med_high     high  
+
+     127      126      126      127 
+
+>  
+
+  
+
+# remove original crim from the dataset 
+
+> boston_scaled <- dplyr::select(boston_scaled, -crim) 
+
+>  
+
+  
+
+# add the new categorical value to scaled data 
+
+> boston_scaled <- data.frame(boston_scaled, crime) 
+
+  
+
+# boston_scaled is available 
+
+>  
+
+  
+
+# number of rows in the Boston dataset 
+
+> n <- nrow(boston_scaled) 
+
+>  
+
+  
+
+# choose randomly 80% of the rows 
+
+> ind <- sample(n,  size = n * 0.8) 
+
+>  
+
+  
+
+# create train set 
+
+> train <- boston_scaled[ind,] 
+
+>  
+
+  
+
+# create test set 
+
+> test <- boston_scaled[-ind,] 
+
+>  
+
+  
+
+# save the correct classes from test data 
+
+> correct_classes <- test$crime 
+
+>  
+
+  
+
+# remove the crime variable from test data 
+
+> test <- dplyr::select(test, -crime) 
+
+  
+
+# MASS and train are available 
+
+>  
+
+  
+
+# linear discriminant analysis 
+
+> lda.fit <- lda(crime ~ ., data = train) 
+
+>  
+
+  
+
+# print the lda.fit object 
+
+> lda.fit 
+
+Call: 
+
+lda(crime ~ ., data = train) 
+
+  
+
+Prior probabilities of groups: 
+
+     high       low  med_high   med_low  
+
+0.2648515 0.2500000 0.2475248 0.2376238  
+
+Group means: 
+
+                  zn      indus        chas        nox         rm        age 
+
+high     -0.48724019  1.0170108 -0.05155709  1.0874849 -0.4499583  0.8166814 
+
+low       0.95232783 -0.9250089 -0.11640431 -0.8866640  0.4352599 -0.8767268 
+
+med_high -0.39205294  0.2882390  0.08200995  0.4187600  0.0769062  0.3947975 
+
+med_low  -0.03859348 -0.3051361 -0.02626030 -0.5735058 -0.0890258 -0.3407444 
+
+                dis        rad        tax     ptratio       black       lstat 
+
+high     -0.8667357  1.6392096  1.5148289  0.78203563 -0.83354346  0.89888497 
+
+low       0.9055335 -0.6919117 -0.7331553 -0.47063537  0.37879901 -0.78335053 
+
+med_high -0.4094969 -0.3973015 -0.2641979 -0.28801353  0.05271565  0.00069132 
+
+med_low   0.4131974 -0.5308586 -0.4600722 -0.08868211  0.32127617 -0.15667032 
+
+                 medv 
+
+high     -0.713664582 
+
+low       0.513169023 
+
+med_high  0.150503209 
+
+med_low   0.007645741 
+
+  
+
+Coefficients of linear discriminants: 
+
+                LD1          LD2          LD3 
+
+zn      -0.12831723 -0.543423723 -0.972710885 
+
+indus   -0.01175966  0.438866847  0.271907394 
+
+chas     0.06902287 -0.017458922  0.201348842 
+
+nox     -0.41140906  0.737732653 -1.272904819 
+
+rm       0.07835835  0.079248455 -0.097322468 
+
+age     -0.26323203  0.224837026 -0.005725033 
+
+dis      0.11862801  0.101478612  0.350995081 
+
+rad     -3.00587168 -0.900636379 -0.080274703 
+
+tax      0.01924470 -0.148583571  0.522719019 
+
+ptratio -0.11031478 -0.009431194 -0.233849275 
+
+black    0.13776978 -0.030198922  0.152095214 
+
+lstat   -0.22536208  0.137227494  0.443168317 
+
+medv    -0.18955773  0.351250475 -0.189255741 
+
+  
+
+Proportion of trace: 
+
+   LD1    LD2    LD3  
+
+0.9488 0.0397 0.0116 
+
+>  
+
+  
+
+# the function for lda biplot arrows 
+
+> lda.arrows <- function(x, myscale = 1, arrow_heads = 0.1, color = "orange", tex = 0.75, choices = c(1,2)){ 
+
+    heads <- coef(x) 
+
+    arrows(x0 = 0, y0 = 0,  
+
+           x1 = myscale * heads[,choices[1]],  
+
+           y1 = myscale * heads[,choices[2]], col=color, length = arrow_heads) 
+
+    text(myscale * heads[,choices], labels = row.names(heads),  
+
+         cex = tex, col=color, pos=3) 
+
+  } 
+
+>  
+
+  
+
+# target classes as numeric 
+
+> classes <- as.numeric(train$crime) 
+
+>  
+
+  
+
+# plot the lda results 
+
+> plot(lda.fit, dimen = 2, col = classes, pch = classes) 
+
+> lda.arrows(lda.fit, myscale = 1) 
+
+  
+
+# lda.fit, correct_classes and test are available 
+
+>  
+
+  
+
+# predict classes with test data 
+
+> lda.pred <- predict(lda.fit, newdata = test) 
+
+>  
+
+  
+
+# cross tabulate the results 
+
+> table(correct = correct_classes, predicted = lda.pred$class) 
+
+          predicted 
+
+correct    high low med_high med_low 
+
+  high       25   0        0       0 
+
+  low         0  14        0       7 
+
+  med_high    1   1       15       3 
+
+  med_low     0   7       10      19 
+
+  
+
+# load MASS and Boston 
+
+> library(MASS) 
+
+> data('Boston') 
+
+>  
+
+  
+
+# euclidean distance matrix 
+
+> dist_eu <- dist(Boston) 
+
+>  
+
+  
+
+# look at the summary of the distances 
+
+> summary(dist_eu) 
+
+   Min. 1st Qu.  Median    Mean 3rd Qu.    Max.  
+
+  1.119  85.624 170.539 226.315 371.950 626.047 
+
+# manhattan distance matrix 
+
+> dist_man <- dist(Boston, method = 'manhattan') 
+
+
+# look at the summary of the distances 
+
+> summary(dist_man) 
+
+    Min.  1st Qu.   Median     Mean  3rd Qu.     Max.  
+
+   2.016  149.145  279.505  342.899  509.707 1198.265 
+
+# Boston dataset is available 
+# k-means clustering 
+
+> km <-kmeans(Boston, centers = 3) 
+
+# plot the Boston dataset with clusters 
+
+> pairs(Boston, col = km$cluster) 
+
+# Boston dataset is available 
+
+> set.seed(123) 
+
+# determine the number of clusters 
+
+> k_max <- 10 
+
+# calculate the total within sum of squares 
+
+> twcss <- sapply(1:k_max, function(k){kmeans(Boston, k)$tot.withinss}) 
+
+# visualize the results 
+
+> qplot(x = 1:k_max, y = twcss, geom = 'line') 
+
+# k-means clustering 
+
+> km <-kmeans(Boston, centers = 2) 
+
+
+# plot the Boston dataset with clusters 
+
+> pairs(Boston, col = km$cluster) 
+
+ 
